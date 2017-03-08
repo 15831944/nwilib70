@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F45E3348-3ECC-40B5-947F-D1CFA2D91AC5}</ProjectGuid>
+    <RootNamespace>nwilib70</RootNamespace>
+    <Keyword>ManagedCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.61030.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <IncludePath>f:\projects\nwilib70\nwilib70;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <IncludePath>f:\projects\nwilib70\nwilib70;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\app\product\11.2.0\client\oo4o\CPP\INCLUDE;C:\Program Files\FarPoint Technologies\Spread 8\Include;F:\Projects\blpapi_cpp_3.6.3.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling />
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>C:\Program Files\FarPoint Technologies\Spread 8\Include;C:\app\product\11.2.0\client\oo4o\CPP\INCLUDE;F:\Projects\blpapi_cpp_3.6.3.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling />
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+    <Reference Include="System.Data">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+    <Reference Include="System.Xml">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AmortBond.cpp" />
+    <ClCompile Include="Assetlev.cpp" />
+    <ClCompile Include="AssetVal.cpp" />
+    <ClCompile Include="AvCost.cpp" />
+    <ClCompile Include="BlmData.cpp" />
+    <ClCompile Include="BlmMktDataObj.cpp" />
+    <ClCompile Include="BlmRefDataObj.cpp" />
+    <ClCompile Include="Bond.cpp" />
+    <ClCompile Include="BSOpt.cpp" />
+    <ClCompile Include="CapBond.cpp" />
+    <ClCompile Include="CHECKBOX.CPP" />
+    <ClCompile Include="CNTLEDIT.CPP" />
+    <ClCompile Include="COMBOX.CPP" />
+    <ClCompile Include="CSVUtil.cpp" />
+    <ClCompile Include="DataObj.cpp" />
+    <ClCompile Include="DBBASE.CPP" />
+    <ClCompile Include="DBREC.CPP" />
+    <ClCompile Include="DBRECARRAY.CPP" />
+    <ClCompile Include="DBSHEET.CPP" />
+    <ClCompile Include="DPBase.cpp" />
+    <ClCompile Include="EditChar.cpp" />
+    <ClCompile Include="Equity.cpp" />
+    <ClCompile Include="Fifo.cpp" />
+    <ClCompile Include="FifoData.CPP" />
+    <ClCompile Include="font.cpp" />
+    <ClCompile Include="GROUP.CPP" />
+    <ClCompile Include="HLBOX.CPP" />
+    <ClCompile Include="KeyData.CPP" />
+    <ClCompile Include="KeyDBList.CPP" />
+    <ClCompile Include="MaskDateEdit.cpp" />
+    <ClCompile Include="MaskEdit.cpp" />
+    <ClCompile Include="MaskIDEdit.cpp" />
+    <ClCompile Include="MaskMinTimeEdit.cpp" />
+    <ClCompile Include="MCComboBox.cpp" />
+    <ClCompile Include="msrowctrl.cpp" />
+    <ClCompile Include="NUMEDIT.CPP" />
+    <ClCompile Include="nwivar.cpp" />
+    <ClCompile Include="ODBCDB.cpp" />
+    <ClCompile Include="ORADATE.CPP" />
+    <ClCompile Include="Oradset.cpp" />
+    <ClCompile Include="ORAFIELD.CPP" />
+    <ClCompile Include="ORALOADER.CPP" />
+    <ClCompile Include="OXMultiComboBox.cpp" />
+    <ClCompile Include="picture.cpp" />
+    <ClCompile Include="PlusBond.cpp" />
+    <ClCompile Include="PortfolioArray.cpp" />
+    <ClCompile Include="QBASE.CPP" />
+    <ClCompile Include="QData.cpp" />
+    <ClCompile Include="RecObj.cpp" />
+    <ClCompile Include="ReportWriter.cpp" />
+    <ClCompile Include="rowctrl.cpp" />
+    <ClCompile Include="SmallRecData.cpp" />
+    <ClCompile Include="SORTARRAY.CPP" />
+    <ClCompile Include="spreadsheet.cpp" />
+    <ClCompile Include="SQLSTMT.CPP" />
+    <ClCompile Include="Stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TransRecObj.cpp" />
+    <ClCompile Include="UTBStrOp.cpp" />
+    <ClCompile Include="VDateEdit.cpp" />
+    <ClCompile Include="WndCtrl.cpp" />
+    <ClCompile Include="WRKSHEET.CPP" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AmortBond.h" />
+    <ClInclude Include="Assetlev.h" />
+    <ClInclude Include="Assetval.h" />
+    <ClInclude Include="avcost.h" />
+    <ClInclude Include="BlmApi.h" />
+    <ClInclude Include="BlmData.h" />
+    <ClInclude Include="BlmMktDataObj.h" />
+    <ClInclude Include="BlmRefDataObj.h" />
+    <ClInclude Include="Bond.h" />
+    <ClInclude Include="BSOpt.h" />
+    <ClInclude Include="CapBond.h" />
+    <ClInclude Include="CHECKBOX.H" />
+    <ClInclude Include="CNTLEDIT.H" />
+    <ClInclude Include="COMBOX.H" />
+    <ClInclude Include="CSVUtil.h" />
+    <ClInclude Include="DataObj.h" />
+    <ClInclude Include="DBBASE.H" />
+    <ClInclude Include="DBREC.H" />
+    <ClInclude Include="DBRECARRAY.H" />
+    <ClInclude Include="DBSHEET.H" />
+    <ClInclude Include="DPBase.h" />
+    <ClInclude Include="EditChar.h" />
+    <ClInclude Include="Equity.h" />
+    <ClInclude Include="Fifo.h" />
+    <ClInclude Include="FifoData.H" />
+    <ClInclude Include="font.h" />
+    <ClInclude Include="GROUP.H" />
+    <ClInclude Include="HLBOX.H" />
+    <ClInclude Include="KeyData.H" />
+    <ClInclude Include="KeyDBList.H" />
+    <ClInclude Include="MaskDateEdit.h" />
+    <ClInclude Include="MaskEdit.h" />
+    <ClInclude Include="MaskIDEdit.h" />
+    <ClInclude Include="MaskMinTimeEdit.h" />
+    <ClInclude Include="MCComboBox.h" />
+    <ClInclude Include="MSRowCtrl.h" />
+    <ClInclude Include="NUMEDIT.H" />
+    <ClInclude Include="nwivar.h" />
+    <ClInclude Include="ODBCDB.h" />
+    <ClInclude Include="OpenTrade.h" />
+    <ClInclude Include="ORADATE.H" />
+    <ClInclude Include="Oradset.h" />
+    <ClInclude Include="OraField.H" />
+    <ClInclude Include="ORALOADER.H" />
+    <ClInclude Include="OXDllExt.h" />
+    <ClInclude Include="OXMainRes.h" />
+    <ClInclude Include="oxmulticombobox.h" />
+    <ClInclude Include="picture.h" />
+    <ClInclude Include="PlusBond.h" />
+    <ClInclude Include="PortfolioArray.h" />
+    <ClInclude Include="QBASE.H" />
+    <ClInclude Include="QData.h" />
+    <ClInclude Include="RecObj.h" />
+    <ClInclude Include="ReportWriter.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="RowCtrl.h" />
+    <ClInclude Include="SmallRecData.h" />
+    <ClInclude Include="SORTARRAY.H" />
+    <ClInclude Include="spreadsheet.h" />
+    <ClInclude Include="SQLSTMT.H" />
+    <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TransRecObj.h" />
+    <ClInclude Include="UTB64Bit.h" />
+    <ClInclude Include="utbstrop.h" />
+    <ClInclude Include="VDateEdit.h" />
+    <ClInclude Include="WndCtrl.h" />
+    <ClInclude Include="WRKSHEET.H" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OXMultiComboBox.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
