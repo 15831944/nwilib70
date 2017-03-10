@@ -1,36 +1,45 @@
 #ifndef __CSVUTIL_H__
 #define __CSVUTIL_H__
 
-#ifndef __NWIVAR_H__
-#include "nwivar.h"
-#endif
+typedef struct {
+	char Data[101];
+} CSVFieldType;
 
-class CCSVUtil
-{
-protected:
-	BOOL m_bRead;
-	int m_nRowCount;
-	CStdioFile m_File;
-	CStringArray m_CSVHeaders;
-	CStringArray m_CSVData;
+typedef struct {
+	char Header[101];
+	int Idx;
+} CSVHeaderType;
 
-public:
-	CCSVUtil() {}
-	~CCSVUtil() { m_File.Close(); }
+typedef struct {
+	int nAction;
+	int nPreRowCount;
+	int nRowCount;
+	int nFieldCount;
+	FILE *fp;
+	char Header[101];
+	char Tail[101];
+	CSVHeaderType CSVHeaders[500];
+	CSVFieldType CSVData[500];
+} CSVDataType;
 
-public: // Data Interfaces
-	BOOL Setup(const CString FileName, BOOL bRead = TRUE);
-	BOOL ReadCSVHeaders(int &nHeaderRow);
-	BOOL ReadCSVData();
-	BOOL WriteCSVHeader(const CString Data, BOOL bWithQuote);
-	BOOL WriteCSVData(const CString Data, BOOL bWithQuote);
-	BOOL WriteCSVLine(BOOL bHeader = FALSE);
-	CStringArray &GetCSVHeaders() { return m_CSVHeaders; }
-	CStringArray &GetCSVData() { return m_CSVData; }
-	CString GetCSVNumber(const CString SrcNum);
+void CSVAssignHeader(CSVDataType *pCSVData, const char *Header);
+int CSVSetup(CSVDataType *pCSVData, const char *FileNmae, const char *Header, const char *Tail, int nAction);
+int CSVSetup2(CSVDataType *pCSVData, const char *FileName, const char *EnvDir, const char *Header, const char *Tail, int nPreHeaderRows, int nAction);
+int CSVSetup3(CSVDataType *pCSVData, const char *FullFileName, const char *Header, const char *Tail, int nPreHeaderRows, int nAction);
+int CSVReadHeaders(CSVDataType *pCSVData);
+int CSVPreHeader(CSVDataType *pCSVData);
+int CSVReadData(CSVDataType *pCSVData);
+int STPTagReadData(CSVDataType *pCSVData);
+int STPQuickProcessTagData(CSVDataType *pCSVData, char *DataLine);
+int CSVGetHeaderIndex(CSVDataType *pCSVData, int nIdx, const char *Data);
+int CSVGetData(CSVDataType *pCSVData, int nIdx, const char *Data);
+int CSVClose(CSVDataType *pCSVData);
+int CSVGetNumber(CSVDataType *pCSVData, char *DestNum, int DestNumSize, const char *SrcNum);
+void CSVDP(char *Data);
+int CSVWriteHeader(CSVDataType *pCSVData);
+int CSVWritePreHeader(CSVDataType *pCSVData);
+int CSVWriteData(CSVDataType *pCSVData);
+int CSVWriteLine(CSVDataType *pCSVData);
+void CSVWriteTail(CSVDataType *pCSVData);
 
-protected:
-	BOOL ReadCSV(CStringArray &DataArray, int &nRow);
-	BOOL WriteCSV(CStringArray &DataArray, const CString Data, BOOL bWithQuote);
-};
 #endif // __CSVUtil_H__
