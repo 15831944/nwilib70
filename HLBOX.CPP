@@ -35,6 +35,17 @@ CHLBox::CHLBox(CListBox *ListBox, UINT MenuID /* = 0 */, BOOL WithNone /* = FASL
 
 CHLBox::CHLBox(CWnd *Parent, int ID, UINT MenuID /* = 0 */, BOOL WithNone /* = FASLE */)
 {
+    Setup(Parent, ID, MenuID, WithNone);
+}
+
+CHLBox::~CHLBox()
+{
+	if(m_Menu.GetSafeHmenu())
+		m_Menu.DestroyMenu();
+}
+
+void CHLBox::Setup(CWnd *Parent, int ID, UINT MenuID, BOOL WithNone)
+{
     RECT      Rect;
     CListBox* ListBox;
     
@@ -46,12 +57,6 @@ CHLBox::CHLBox(CWnd *Parent, int ID, UINT MenuID /* = 0 */, BOOL WithNone /* = F
 	AddMenu(MenuID);
 	if(Parent && ID > 0)
 		CListBox::SubclassDlgItem(ID, Parent);
-}
-
-CHLBox::~CHLBox()
-{
-	if(m_Menu.GetSafeHmenu())
-		m_Menu.DestroyMenu();
 }
 
 void CHLBox::AddMenu(UINT MenuID /* = 0 */)
@@ -78,6 +83,14 @@ void CHLBox::ResetLBHExtent()
 {
 	m_nMaxHExtent = m_nOrigMaxHExtent;
 	SetHorizontalExtent(m_nMaxHExtent);
+}
+
+void CHLBox::SetData(const CString Data)
+{
+	int CurSel;
+
+	CurSel = CListBox::FindStringExact(0, Data);
+	CListBox::SetCurSel(CurSel);
 }
 
 void CHLBox::SetLBHExtent(int HExtent)

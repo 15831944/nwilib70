@@ -37,7 +37,9 @@ public:
 				int CharCase = UPPERCASE, UINT nLimitText = 0, LPCTSTR ErrMsg = "Invalid Data");
 	void SetCharCase(int CharCase = UPPERCASE) { m_nCharCase = CharCase; }
 	int  GetCharCase() { return m_nCharCase; }
-	void SetWindowText(LPCTSTR lpText);
+	
+	virtual const CString GetData();
+	void SetData(const CString Text);
 	virtual BOOL IsValid(LPCTSTR lpText);
 	virtual BOOL ProcessData();
 	CString &GetErrMsg() { return m_ErrMsg; }

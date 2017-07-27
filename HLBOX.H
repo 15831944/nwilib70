@@ -16,12 +16,14 @@ private:
 	void SetLBHExtent(int HExtent);
 	void AddMenu(UINT MenuID = 0);
 
-public:  
+public:
+	CHLBox() {}
 	CHLBox(int nHMaxExtent, UINT MenuID = 0, BOOL WithNone = FALSE);
 	CHLBox(CListBox *ListBox, UINT MenuID = 0, BOOL WithNone = FALSE);
 	CHLBox(CWnd *Parent, int ID, UINT MenuID = 0, BOOL WithNone = FALSE);
 	~CHLBox();
    
+	void Setup(CWnd *Parent, int ID, UINT MenuID = 0, BOOL WithNone = FALSE);
 	int  AddString(LPCTSTR String);
 	int  InsertString(int nIndex, LPCTSTR String);
 	void ResetContent();
@@ -34,6 +36,9 @@ public:
 	int SelectString(int nStartAfter, LPCTSTR Key);
 	int EditFind(CWnd &Wnd);
 	int	EditSelect(CWnd &Wnd);
+
+	void SetData(const CString Data);
+	virtual const CString GetData() { CString Buffer; GetSelString(Buffer); return Buffer; }
 
 protected:
 	// Generated message map functions

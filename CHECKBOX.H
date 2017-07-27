@@ -15,14 +15,19 @@ protected:
 
 public:
 	CCheckBox();
-	CCheckBox(CWnd *Parent, unsigned int ID, LPCTSTR CheckString = Y, LPCTSTR UnCheckString = EMPTYSTRING);
+	CCheckBox(CWnd *Parent, unsigned int ID, LPCTSTR CheckString = Y, LPCTSTR UnCheckString = EMPTYSTRING) { Setup(Parent, ID, CheckString, UnCheckString); }
 	~CCheckBox() {}
 
+	void Setup(CWnd *Parent, unsigned int ID, LPCTSTR CheckString = Y, LPCTSTR UnCheckString = EMPTYSTRING);
 	LPCTSTR GetCheckString();
-	void SetCheck(LPCTSTR TextString);
-	void SetCheck(int nCheck = 1);
+	void SetCheck(LPCTSTR TextString) { CButton::SetCheck(TextString == m_CheckString ? TRUE : FALSE); }
+	void SetCheck(int nCheck = 1) { CButton::SetCheck(nCheck); }
 	void SetStrings(LPCTSTR CheckString = Y, LPCTSTR UnCheckString = EMPTYSTRING);
 
+	virtual const CString GetData() { return CButton::GetCheck() ? m_CheckString : m_UnCheckString; }
+	virtual void SetData(const CString CheckString) { CButton::SetCheck(CheckString == m_CheckString ? TRUE : FALSE); }
+	virtual void SetData(int nCheck = 1) { CButton::SetCheck(nCheck); }
+	
 	void SetReadOnly(BOOL bReadOnly = TRUE) { m_bReadOnly = bReadOnly; }
 	BOOL GetReadOnly() { return m_bReadOnly; } 
 

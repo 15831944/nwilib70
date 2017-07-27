@@ -3,8 +3,9 @@
 #include "oradate.h"
 #include "qdata.h"
 
+
 double CEquity::m_SecFeeRate = 0;
-double CEquity::m_OrFeeRate = 0;
+COrFeeDataArray m_OrFeeDataArray;
 
 IMPLEMENT_DYNAMIC(CEquity, CObject)
 CEquity::CEquity(CEquity& Eq) 
@@ -121,11 +122,21 @@ double CEquity::GetSecFees(double GrossPrice, BOOL bSec)
 	return 0;
 }
 
-double CEquity::GetOrFees(double Par, BOOL bOr)
+double CEquity::GetOrFees(const CString PB, const CString CP, double Contracts)
 {
+	COrFeeData *pData;
 	CQData QData;
+	int i;
 
-	if(Par > 0 && (GetType() == CALL || GetType() == PUT))
-		return QData.Round(GetNomAmount()/Par*m_OrFeeRate, 2);
+	if(GetType() == CALL || GetType() == PUT)
+	{
+		i = m_OrFeeDataArray.Find(PB, CP, Contracts);
+		pData = m_OrFeeDataArray.GetAt(i);
+		if(pData)
+			return QData.Round(Contracts*pData->GetOrFee() + pData->GetOCCFee(), 2);
+		else
+			return 0;
+	}
+	
 	return 0;
 }

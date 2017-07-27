@@ -47,7 +47,7 @@ public:
 	virtual BOOL ValidData();
 	BOOL SetMaskChars(const CString strMask);
 	virtual void SetData(const CString Data);
-	virtual CString GetData();
+	virtual const CString GetData();
 
 	int  GetCharCase() { return m_nCharCase; }
 	BOOL GetWithMask() { return m_bWithMask; }

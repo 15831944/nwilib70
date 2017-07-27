@@ -70,15 +70,57 @@ BOOL CNumEdit::ProcessData()
 	return GetValid();
 }
 
-void CNumEdit::SetWindowText(LPCTSTR Num)
+void CNumEdit::SetData(const CString Num)
 {
 	CString Text;
 	CQData QData;
 
 	Text = Num;
+
 	if(IsValid(Text))
 	{
 		Text = QData.WriteNumber(Text, WithComma(), GetDigits());
 		CEdit::SetWindowText(Text);
 	}
+}
+
+void CNumEdit::SetData(double Num)
+{
+	CString Text;
+	CQData QData;
+
+	Text.Format("%9.9lf", Num);
+
+	if(IsValid(Text))
+	{
+		Text = QData.WriteNumber(Text, WithComma(), GetDigits());
+		CEdit::SetWindowText(Text);
+	}
+}
+
+void CNumEdit::SetData(int Num)
+{
+	CString Text;
+	CQData QData;
+
+	Text.Format("%d", Num);
+
+	if(IsValid(Text))
+	{
+		Text = QData.WriteNumber(Text, WithComma(), 0);
+		CEdit::SetWindowText(Text);
+	}
+}
+
+const CString CNumEdit::GetData()
+{
+	CQData QData;
+	CString Text;
+
+	GetWindowText(Text);
+	
+	if(!WithComma())
+		QData.RemoveComma(Text);
+	
+	return Text;
 }

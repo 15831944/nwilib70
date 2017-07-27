@@ -54,7 +54,7 @@ BOOL CMaskIDEdit::ValidData()
 	return FALSE;
 }
 
-CString CMaskIDEdit::GetData()
+const CString CMaskIDEdit::GetData()
 {
 	CString Data;
 
@@ -62,4 +62,14 @@ CString CMaskIDEdit::GetData()
 
     Data = Data.SpanExcluding("_");
 	return Data;
+}
+
+unsigned int CMaskIDEdit::GetID()
+{
+	unsigned nID = 0;
+
+	if(GetData().Find("%", 0) >= 0)
+		nID = atoi(GetData());
+
+	return nID;
 }

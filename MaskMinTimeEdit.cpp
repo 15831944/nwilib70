@@ -65,3 +65,4 @@ BOOL CMaskMinTimeEdit::ValidData()
 
 	return mydate.GetStatus() == COleDateTime::valid ? TRUE : FALSE;
 }
+

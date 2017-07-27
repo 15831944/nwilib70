@@ -18,12 +18,23 @@ COptComboBox::COptComboBox(CComboBox *ComboBox, BOOL WithNone /* = FASLE */, BOO
  //   SubclassDlgItem(ComboBox->GetDlgCtrlID(), ComboBox->GetParent());
 }
 
-COptComboBox::COptComboBox(CWnd *Parent, int ID, BOOL WithNone /* = FASLE */, BOOL bAdd)
+BOOL COptComboBox::Setup(CWnd *Parent, UINT ID, BOOL WithNone /* = FASLE */, BOOL bAdd) 
 {
+	BOOL bSub;
+
+	bSub = this->SubclassDlgItem(ID, Parent);
+	if(!bSub)
+	{
+		CString Text;
+
+		Text.Format("There is a problem when create %d Control", ID);
+		MessageBox(Text);
+	}
+
 	SetWithNone(WithNone);
 	SetAdd(bAdd);
-	if(Parent && ID > 0)
-		CComboBox::SubclassDlgItem(ID, Parent);	
+    
+	return bSub;
 }
 
 void COptComboBox::GetLBText(int Index, CString &Text)
@@ -69,6 +80,14 @@ int COptComboBox::SetCurSel(int Index)
 	}
 
 	return CB_ERR;
+}
+
+void COptComboBox::SetData(const CString Data)
+{
+	int CurSel;
+
+	CurSel = CComboBox::FindStringExact(0, Data);
+	CComboBox::SetCurSel(CurSel);
 }
 
 int COptComboBox::FindString(int nStartAfter, LPCTSTR Key)

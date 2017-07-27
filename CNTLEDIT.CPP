@@ -80,7 +80,19 @@ BOOL CCntlEdit::ProcessData()
 	return GetValid();
 }
 
-void CCntlEdit::SetWindowText(LPCTSTR lpText)
+const CString CCntlEdit::GetData()
+{
+	CString Text;
+
+	CEdit::GetWindowText(Text);
+	SetValid(IsValid(Text));
+	if(!GetValid())
+		Text.Empty();
+
+	return Text;
+}
+
+void CCntlEdit::SetData(const CString lpText)
 {
 	CString Text;
 

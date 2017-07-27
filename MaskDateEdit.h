@@ -10,6 +10,7 @@ class CMaskDateEdit : public CMaskEdit
 DECLARE_DYNCREATE(CMaskDateEdit)
 
 protected:
+	COleDateTime m_Date;
 	CMaskDateEdit *m_pCompareDate;
 	CString m_CompareDate;
 	
@@ -27,6 +28,8 @@ public:
 	void SetCompareDate(CMaskDateEdit *pCompareDate) { m_pCompareDate = pCompareDate; }
 	void SetCompareDate(CString CompareDate) { m_CompareDate = CompareDate; }
 	virtual BOOL ValidData();
+
+	virtual COleDateTime &GetDate();
 };
 
 #endif

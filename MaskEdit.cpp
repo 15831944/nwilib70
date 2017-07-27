@@ -101,8 +101,7 @@ void CMaskEdit::AdjustCharCase(UINT &nChar)
 
 void CMaskEdit::SetData(const CString Data)
 {
-	CString strText;
-	CString strData;
+	CString strText, strData;
 	int iNextDataChar = 0;
 
 	strText.Empty();
@@ -136,7 +135,7 @@ void CMaskEdit::SetData(const CString Data)
 	SetWindowText(strText);
 }
 
-CString CMaskEdit::GetData()
+const CString CMaskEdit::GetData()
 {
 	int i;
 	CString strText, strData, strNULL;
@@ -380,12 +379,8 @@ int CMaskEdit::FindNextChar(int nStartPos, BOOL bStatic, BOOL bForward)
 BOOL CMaskEdit::SetMaskChars(const CString strMask)
 {
 	CEditChar EditChar;
-	CString strChars;
-	CString strRangeLow;
-	CString strSearch;
-	BOOL bInside = FALSE;
-	BOOL bInsideEscape = FALSE;
-	BOOL bInsideRange = FALSE;
+	CString strChars, strRangeLow, strSearch;
+	BOOL bInside = FALSE, bInsideEscape = FALSE, bInsideRange = FALSE;
 	int i;
 
 	if(GetFindMode())

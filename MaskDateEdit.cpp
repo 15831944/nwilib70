@@ -85,3 +85,16 @@ BOOL CMaskDateEdit::ValidData()
 
 	return FALSE;
 }
+
+COleDateTime &CMaskDateEdit::GetDate()
+{
+	int yy, mm, dd;
+
+	m_Date.SetStatus(COleDateTime::null);
+
+	if(GetData().Find("%", 0) < 0)
+		if(ConvertDate(GetData(), yy, mm, dd))
+			m_Date.SetDate(yy, mm, dd);
+
+	return m_Date;
+}

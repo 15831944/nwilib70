@@ -80,6 +80,8 @@ public:
 	void SetAdd(BOOL bAdd) { m_bAdd = bAdd; }
 	BOOL GetAdd() { return m_bAdd; }
 
+	virtual const CString GetData() { CString Buffer; GetSelString(Buffer); return Buffer; }
+	virtual void SetData(const CString Data) { COXMultiComboBox::SelectString(0, Data); }
 protected:
 	BOOL m_bAdd;
 };

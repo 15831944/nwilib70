@@ -32,7 +32,11 @@ public:
 	void SetDigits(int nDigits) { m_nDigits = nDigits; }
 	BOOL WithComma() { return m_bWithComma; }
 	void SetWithComma(BOOL bWithComma);
-	void SetWindowText(LPCTSTR Num);
+	void SetData(const CString Num);
+	void SetData(double Num);
+	void SetData(int Num);
+
+	virtual const CString GetData();
 };
 
 #endif // __NUMEDIT_H__

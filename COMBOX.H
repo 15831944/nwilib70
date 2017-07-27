@@ -8,15 +8,20 @@ protected:
 	BOOL  m_bWithNone;
 	BOOL  m_bAdd;
 
-public:  
+public:
+	COptComboBox() {}
 	COptComboBox(CComboBox *ComboBox, BOOL WithNone = FALSE, BOOL bAdd = FALSE);
-	COptComboBox(CWnd *Parent, int ID, BOOL WithNone = FALSE, BOOL bAdd = FALSE);	
+	COptComboBox(CWnd *Parent, int ID, BOOL WithNone = FALSE, BOOL bAdd = FALSE) { Setup(Parent, ID, WithNone, bAdd); }
 	~COptComboBox() {};
 
+	BOOL Setup(CWnd *Parent, UINT ID, BOOL WithNone = FALSE, BOOL bAdd = FALSE);
 	void SetWithNone(BOOL WithNone = TRUE) { m_bWithNone = WithNone; }
 	BOOL GetWithNone() { return m_bWithNone; }
 	void SetAdd(BOOL bAdd) { m_bAdd = bAdd; }
 	BOOL GetAdd() { return m_bAdd; }
+
+	void SetData(const CString Data);
+	virtual const CString GetData() { CString Data; GetSelString(Data); return Data; }
 
 	LPCTSTR GetSelString(CString &Text);
 	void GetLBText(int Index, CString &Text);

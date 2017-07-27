@@ -12,8 +12,8 @@ CCheckBox::CCheckBox()
 	SetReadOnly(FALSE);
 }
 	
-CCheckBox::CCheckBox(CWnd *Parent, unsigned int ID, LPCTSTR CheckString, LPCTSTR UnCheckString)
-{	
+void CCheckBox::Setup(CWnd *Parent, unsigned int ID, LPCTSTR CheckString, LPCTSTR UnCheckString)
+{
 	SetStrings(CheckString, UnCheckString);
     if(Parent && ID > 0)
 		CButton::SubclassDlgItem(ID, Parent);
@@ -30,19 +30,6 @@ END_MESSAGE_MAP()
 LPCTSTR CCheckBox::GetCheckString()
 {
 	return (LPCTSTR) CButton::GetCheck() ? m_CheckString : m_UnCheckString; 	
-}
-
-void CCheckBox::SetCheck(LPCTSTR TextString)
-{
-	if(TextString && m_CheckString == TextString)
-		SetCheck(1);
-	else
-		SetCheck(0);
-}
-
-void CCheckBox::SetCheck(int nCheck)
-{
-	CButton::SetCheck(nCheck);
 }
 
 void CCheckBox::SetStrings(LPCTSTR CheckString, LPCTSTR UnCheckString)

@@ -13,14 +13,17 @@
 #include "qdata.h"
 #endif
 
+#ifndef __ORFEEDATA_H__
+#include "OrFeeData.h"
+#endif
+
 extern double SECFEERATE;
-extern double ORFEERATE;
+extern COrFeeDataArray m_OrFeeDataArray;
 
 class CEquity : public CObject
 {
 public:
 	static double m_SecFeeRate;
-	static double m_OrFeeRate;
 
 DECLARE_DYNAMIC(CEquity)
 protected:
@@ -70,6 +73,8 @@ public:
 	double GetValue(BOOL bLocal = TRUE);
 
 	double GetSecFees(double GrossPrice, BOOL bSec);
-	double GetOrFees(double Par, BOOL bOr);
+	double GetOrFees(const CString PB, const CString CP, double Contracts);
 };
+
+
 #endif
