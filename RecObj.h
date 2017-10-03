@@ -1,9 +1,7 @@
-#ifndef __RECOBJ_H__
-#define __RECOBJ_H__
+#pragma once
 
-#ifndef __ORALOADER_H__
 #include "oraloader.h"
-#endif
+
 
 class CRecObj : public CObject
 {
@@ -50,4 +48,4 @@ public:
 	virtual BOOL UpdateRec(COraLoader &OraLoader, BOOL bByID = FALSE) { return TRUE; }
 	virtual BOOL DeleteRec(COraLoader &OraLoader, BOOL bByID = FALSE) { return TRUE; }
 };
-#endif
+

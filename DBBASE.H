@@ -1,5 +1,4 @@
-#ifndef __DBBASE_H__
-#define __DBBASE_H__
+#pragma once
 
 class CDBBase : public CObject
 {
@@ -61,4 +60,3 @@ public:
 		
 	const CDBBaseArray &operator=(CDBBaseArray &DBBaseArray) { Copy(DBBaseArray); return *this; }
 };
-#endif

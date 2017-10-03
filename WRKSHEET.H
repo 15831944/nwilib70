@@ -1,10 +1,6 @@
-#ifndef __WORKSHEET_H__
-#define __WORKSHEET_H__
+#pragma once
 
-#ifndef __SPREADSHEET_H__
 #include "spreadsheet.h"
-#endif
-
 #include "ssocx.h"
 
 class CWorkSheet : public CSpreadSheet
@@ -50,4 +46,3 @@ public:
 	void SetSheetRowHidden(int Row, BOOL Hidden = TRUE);
 };
 
-#endif // __WRKSHEET_H__

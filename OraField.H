@@ -1,5 +1,4 @@
-#ifndef __ORAFIELD_H__
-#define __ORAFIELD_H__
+#pragma once
 
 class COraField : public CObject
 {
@@ -60,5 +59,5 @@ public:
 	void Copy(CFieldArray &FieldArray);
 	const CFieldArray &operator = (CFieldArray &FieldArray) { Copy(FieldArray); return *this; }
 };
-#endif // __ORAFIELD_H__
+
 

@@ -1,17 +1,9 @@
-#ifndef __DBSHEET_H__
-#define __DBSHEET_H__
+#pragma once
 
-#ifndef __WRKSHEET_H__
 #include "wrksheet.h"
-#endif
-
-#ifndef __ORAFIELD_H__
 #include "orafield.h"
-#endif
-
-#ifndef __DBREC_H__
 #include "dbrec.h"
-#endif
+
 
 class CDBSheet : public CWorkSheet
 {
@@ -53,4 +45,3 @@ public:
 	void SetSheetColHidden(int Col, BOOL Hidden = TRUE) { CWorkSheet::SetSheetColHidden(Col, Hidden); }
 };
 
-#endif // __DBSHEET_H__

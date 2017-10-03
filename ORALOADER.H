@@ -65,7 +65,7 @@ public: // Interfaces
 	CString &TPlus3(CString &Date, LPCTSTR SrcDate, LPCTSTR Currency = "USD", BOOL bCDS = FALSE);
 	CString &TMinus1(CString &Date, LPCTSTR SrcDate, LPCTSTR Currency = "USD", BOOL bCDS = FALSE);
 	CString &TMinus3(CString &Date, LPCTSTR SrcDate, LPCTSTR Currency = "USD", BOOL bCDS = FALSE);
-	CString &GetValueDate(LPCTSTR SrcDate, const CString TransType, BOOL bListed, BOOL bFuture = FALSE);
+	CString &GetValueDate(LPCTSTR SrcDate, const CString TransType, const CString Asset, BOOL bListed);
 	CString &OptExpDate(CString &Date, LPCTSTR SrcDate);
 	int LoadComboBox(COptComboBox &CBox);
 	int LoadMCComboBox(CMCComboBox &MCComboBox, int KeyCol = 0);

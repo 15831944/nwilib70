@@ -999,21 +999,63 @@ BOOL COraLoader::InCurrentMonth(LPCTSTR Date)
 	return FALSE;
 }
 
-CString &COraLoader::GetValueDate(LPCTSTR SrcDate, const CString TransType, BOOL bListed, BOOL bFuture)
+CString &COraLoader::GetValueDate(LPCTSTR SrcDate, const CString TransType, const CString Asset, BOOL bListed)
 {
-	if(bFuture)
-		m_DataBuf = SrcDate;
+	CString ValueDate;
+
+	if(TransType == CDS) // CDS and Forex, Value Date is T + 1
+		TPlus1(ValueDate, SrcDate, "USD", TRUE);
 	else
-		if(TransType == CDS)
-			TPlus1(m_DataBuf, SrcDate, "USD", TRUE);
+		if(TransType == REPO || TransType == FOREX) // Repo T + 2
+			TPlus2(ValueDate, SrcDate);
+		else // Other T + 3
+			TPlus3(ValueDate, SrcDate);
+
+	if((TransType == SECURITIES || TransType == CALL || TransType == PUT) && !Asset.IsEmpty())
+	{
+		CQData QData;
+		CString sAsset, AssetType, Future;
+	
+		sAsset = QData.GetQueryText(Asset);
+
+		Open("SELECT ASS_INDUSTRY, ASS_CONV_TYPE FROM SEMAM.NW_ASSETS WHERE ASS_CODE = " + sAsset);
+		AssetType = GetDBString(0);
+		Future = GetDBString(1);
+
+		if(Future == F && AssetType.Find("CURRENCY") < 0) // Future except currencys
+			ValueDate = SrcDate;
 		else
-			if((bListed && (TransType == CALL || TransType == PUT)) || TransType == FOREX)
-				TPlus1(m_DataBuf, SrcDate);
-			else
-				if(TransType == CALL || TransType == PUT)
-					TPlus2(m_DataBuf, SrcDate);
+			if(TransType == CALL || TransType == PUT)
+			{
+				if(bListed) // Listed Options
+					TPlus1(ValueDate, SrcDate);
+				else 
+					TPlus2(ValueDate, SrcDate);
+			}
+			else			
+				if(AssetType == "US FIXED INCOME")
+					TPlus1(ValueDate, SrcDate);
 				else
-					TPlus3(m_DataBuf, SrcDate);
+				{
+					if(AssetType == "ADR EQUITIES" || AssetType == "DOM EQTY-NEW" || AssetType == "DOM EQUITIES" || AssetType == "EQUITY FUNDS" || 
+						AssetType == "EXCH TRADE FUND" || AssetType == "BRADY BONDS" || AssetType == "CONVERTIBLE" || AssetType == "CORPORATE" || 
+						AssetType == "COUNTRY FUND" || AssetType == "DM BONDS" || AssetType == "EM BONDS" || AssetType == "EURO BONDS" || 
+						AssetType == "FIXED INC FUNDS" || AssetType == "FIXED INCOME" || AssetType == "G7 BONDS" || AssetType == "G7 FIXED INCOME" || 
+						AssetType == "SOVEREIGN")
+						TPlus2(ValueDate, SrcDate);
+					else
+						if(AssetType == "CURRENCY FWDS")
+						{
+							Open("SELECT ASS_MATURITY_DATE FROM SEMAM.NW_ASSETS WHERE ASS_CODE = " + sAsset);
+							LoadTextString(ValueDate);
+										
+							if(ValueDate.IsEmpty()) // if it is spot T + 1
+								TPlus2(ValueDate, SrcDate);
+						}
+				}
+	}
+
+	m_DataBuf = ValueDate;
 
 	return m_DataBuf;
 }
