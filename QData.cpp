@@ -325,7 +325,7 @@ LPCTSTR CQData::WriteNumber(double Number, BOOL bComma, int Precision)
 	CString Fmt;
 
 	if(Precision < 0)
-		m_DataBuf.Format("%.12lf", Number);
+		m_DataBuf.Format("%.20lf", Number);
 	else
 		if(Precision == 0)
 			m_DataBuf.Format("%.0lf", Number);

@@ -86,30 +86,16 @@ void CNumEdit::SetData(const CString Num)
 
 void CNumEdit::SetData(double Num)
 {
-	CString Text;
 	CQData QData;
 
-	Text.Format("%9.9lf", Num);
-
-	if(IsValid(Text))
-	{
-		Text = QData.WriteNumber(Text, WithComma(), GetDigits());
-		CEdit::SetWindowText(Text);
-	}
+	CEdit::SetWindowText(QData.WriteNumber(Num, WithComma(), GetDigits()));
 }
 
 void CNumEdit::SetData(int Num)
 {
-	CString Text;
 	CQData QData;
 
-	Text.Format("%d", Num);
-
-	if(IsValid(Text))
-	{
-		Text = QData.WriteNumber(Text, WithComma(), 0);
-		CEdit::SetWindowText(Text);
-	}
+	CEdit::SetWindowText(QData.WriteNumber(Num, WithComma(), 0));
 }
 
 const CString CNumEdit::GetData()

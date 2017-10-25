@@ -22,10 +22,8 @@ protected:
 
 public:
 	CNumEdit() {};
-	CNumEdit(CWnd *Parent, UINT ID, LPCTSTR ErrMsg = "Invalid Number", int Digits = -1, 
-			BOOL bWithComma = TRUE);
-	void Setup(CWnd *Parent, UINT ID, LPCTSTR ErrMsg = "Invalid Number", int Digits = -1, 
-				BOOL bWithComma = TRUE);
+	CNumEdit(CWnd *Parent, UINT ID, LPCTSTR ErrMsg = "Invalid Number", int Digits = -1, BOOL bWithComma = TRUE);
+	void Setup(CWnd *Parent, UINT ID, LPCTSTR ErrMsg = "Invalid Number", int Digits = -1, BOOL bWithComma = TRUE);
 
 	virtual BOOL ProcessData();
 	int GetDigits() { return m_nDigits; }
