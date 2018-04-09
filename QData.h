@@ -74,6 +74,7 @@ public: // Numeric Function
 
 	LPCTSTR RemoveString(CString &String, LPCTSTR RemoveString);
 
+	LPCTSTR GetImpliedFxrate(LPCTSTR AssetClass, LPCTSTR Currency, LPCTSTR Rev, LPCTSTR Price);
 	int CopyDBRecArrayToComboBox(CDBRecArray &DBRecArray, COptComboBox &ComboBox, int Col = 0, BOOL bSetModified = TRUE);
 	int CopyKeyDBListKeyToComboBox(CKeyDBList &KeyDBList, COptComboBox &ComboBox, BOOL bSetModified = TRUE);
 	int CopyKeyDBListDataToComboBox(CKeyDBList &KeyDBList, LPCTSTR Key, COptComboBox &ComboBox, BOOL bSetModified = TRUE);

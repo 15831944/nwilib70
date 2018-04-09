@@ -636,6 +636,33 @@ int CQData::YYToYYYY(int yy)
 	return yy;
 }
 
+LPCTSTR CQData::GetImpliedFxrate(LPCTSTR AssetClass, LPCTSTR Currency, LPCTSTR Rev, LPCTSTR Price)
+{
+	SetDataBuf(EMPTYSTRING);
+
+	if(!AssetClass || strlen(AssetClass) == 0 || !Currency || strlen(Currency) == 0 ||!Rev || !Price || strlen(Price) == 0)
+		return GetDataBuf();
+
+	if(strcmp(AssetClass, "CURRENCY FWDS") == 0)
+	{
+		if(strcmp(Currency, USD) == 0 && strlen(Rev) == 0) // Traded in USD and not rev
+		{
+			double dPrice;
+				
+			dPrice = atof(RemoveComma(Price));
+			if(dPrice > 0)
+			{
+				SetDataBuf(WriteNumber(1/dPrice));
+				return GetDataBuf();
+			}
+		}
+
+		SetDataBuf(Price);
+	}
+
+	return GetDataBuf();
+}
+
 BOOL CQData::IsBloombergAvailbe()
 {
 	WIN32_FIND_DATA FindFileData;
