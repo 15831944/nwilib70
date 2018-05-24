@@ -15,13 +15,15 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR Date, LPCTSTR Portfolio, LP
 	m_OraLoader = OraLoader;
 	GetOraLoader().GetSql().Format("SELECT TRANS_TYPE, TRANS_DIRECTION, VALUE_DATE, "
 			"NOM_AMOUNT, NVL(PRICE, 1), FXRATE, ASS_TYPE, ASS_RATE_BASIS, ASS_ACCRUABLE, "
-			"ASS_PAID_INT, NVL(RATE_BASIS, 'A/360'), NVL(TR_RATE, 0), FLOAT_RATE_FORMULA, "
-			"ASS_FROM, ASS_TO, NVL(RATE, 0), NVL(AMORT_FACT, 1), NVL(CAPIT_RATE, 0), "
+			"ASS_PPAID_INT, NVL(RATE_BASIS, 'A/360'), NVL(TR_RATE, 0), FLOAT_RATE_FORMULA, "
+			"NVL(START_DATE, ASS_FROM), ASS_TO, NVL(RATE, 0), NVL(AMORT_FACT, 1), NVL(CAPIT_RATE, 0), "
 			"NVL(PLUS_AMOUNT, 0), ASS_TO - ADD_MONTHS(ASS_TO, ROUND(MONTHS_BETWEEN(ASS_FROM, ASS_TO), 0)) "
-			"FROM SEMAM.NW_TR_TICKETS A "
-			"JOIN SEMAM.NW_ASSETS B ON (A.ASSET_CODE =B.ASS_CODE) "
-			"LEFT OUTER JOIN SEMAM.NW_ASS_PERIODS C ON (B.ASS_CODE = C.ASS_CODE AND ASS_FROM(+) <= %s AND ASS_TO(+) > %s) "
-			"WHERE A.PORTFOLIO = %s "
+			"FROM SEMAM.NW_TR_TICKETS A, SEMAM.NW_ASSETS B, SEMAM.NW_ASS_PERIODS C "
+			"WHERE B.ASS_CODE = A.ASSET_CODE "
+			"AND C.ASS_CODE(+) = B.ASS_CODE "
+			"AND C.ASS_FROM(+) <= %s "
+			"AND C.ASS_TO(+) > %s "
+			"AND A.PORTFOLIO = %s "
 			"AND A.TRANS_NUM = %s ", (LPCTSTR) sDate, (LPCTSTR) sDate, (LPCTSTR) sPort, 
 			(LPCTSTR) sTransNum);
 
@@ -69,8 +71,8 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR Date, LPCTSTR Portfolio, LP
 		GetOraLoader().MoveNext();
 	}
 
-	CAssetLev::Setup(OraLoader, TransType, Amount, Price, Fxrate, AssetType, Amort, 
-					Plus, Dir);
+	CAssetLev::Setup(OraLoader, TransType, Amount, Price, Fxrate, AssetType, Amort, Plus, Dir);
+
 	if(Rate != 0)
 		CAssetLev::SetupIntInfo(AssFrom, VDate, Date, AssTo, RateBasis, Rate, AADays, 
 								Accrual, PrePaid);
@@ -116,13 +118,15 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR TransType, LPCTSTR Dir, LPC
 	}
 	
 	Text = QData.GetQueryDate(ValueDate);
-	OraLoader.GetSql().Format("SELECT ASS_FROM, ASS_TO, ASS_RATE_BASIS, ASS_ACCRUABLE, "
-			"ASS_PPAID_INT, ASS_TYPE, RATE, NVL(AMORT_FACT, 1), NVL(CAPIT_RATE, 0), "
-			"NVL(PLUS_AMOUNT, 0), "
+	OraLoader.GetSql().Format("SELECT NVL(START_DATE, ASS_FROM), ASS_TO, ASS_RATE_BASIS, "
+			"ASS_ACCRUABLE, ASS_PPAID_INT, ASS_TYPE, RATE, NVL(AMORT_FACT, 1), "
+			"NVL(CAPIT_RATE, 0), NVL(PLUS_AMOUNT, 0), "
 			"ASS_TO - ADD_MONTHS(ASS_TO, ROUND(MONTHS_BETWEEN(ASS_FROM, ASS_TO), 0)) "
-			"FROM SEMAM.NW_ASSETS A "
-			"LEFT OUTER JOIN SEMAM.NW_ASS_PERIODS B ON (A.ASS_CODE = B.ASS_CODE AND B.ASS_FROM <= %s AND B.ASS_TO > %s) "
-			"WHERE A.ASS_CODE = %s ", (const char*) Text, (const char*) Text, QData.GetQueryText(Asset));
+			"FROM SEMAM.NW_ASSETS A, SEMAM.NW_ASS_PERIODS B "
+			"WHERE B.ASS_CODE(+) = A.ASS_CODE "
+			"AND B.ASS_FROM(+) <= %s "
+			"AND B.ASS_TO(+) > %s "
+			"AND A.ASS_CODE = %s ", (const char*) Text, (const char*) Text, QData.GetQueryText(Asset));
 	if(!OraLoader.Open())
 		return;
 	
