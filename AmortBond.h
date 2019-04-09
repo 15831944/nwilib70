@@ -16,7 +16,9 @@ protected:
 	virtual double ComputeValue(double NomAmount = -1, double Price = -1);
 	virtual double ComputeInterest(double Amount, double Rate, int Days, int YearBase);
 	virtual double ComputeInterest(double Amount, double Rate, LPCTSTR StartDate, 
-						LPCTSTR EndDate, LPCTSTR RateBasis, int *IntDays, int *IntDays2);
+						LPCTSTR EndDate, LPCTSTR RateBasis, int &IntDays, int &IntDays2);
+	virtual double ComputeInterest(double Amount, double Rate, double AmortFact, LPCTSTR StartDate, 
+						LPCTSTR EndDate, LPCTSTR RateBasis, int &IntDays, int &IntDays2);
 
 public:
 	CAmortBond() { SetAmortFact(); }

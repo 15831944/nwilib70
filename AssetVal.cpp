@@ -13,16 +13,16 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR Date, LPCTSTR Portfolio, LP
 	sTransNum = QData.GetQueryNumber(TransNum);
 	sPort = QData.GetQueryText(Portfolio);
 	m_OraLoader = OraLoader;
-	GetOraLoader().GetSql().Format("SELECT TRANS_TYPE, TRANS_DIRECTION, VALUE_DATE, "
-			"NOM_AMOUNT, NVL(PRICE, 1), FXRATE, ASS_TYPE, ASS_RATE_BASIS, ASS_ACCRUABLE, "
-			"ASS_PPAID_INT, NVL(RATE_BASIS, 'A/360'), NVL(TR_RATE, 0), FLOAT_RATE_FORMULA, "
+	GetOraLoader().GetSql().Format("SELECT TRANS_TYPE, TRANS_DIRECTION, VALUE_DATE, NOM_AMOUNT, "
+			"NVL(PRICE, 1), FXRATE, ASS_TYPE, ASS_RATE_BASIS, ASS_ACCRUABLE, ASS_PPAID_INT, "
+			"ASS_FLOAT_FORMULA, NVL(RATE_BASIS, 'A/360'), NVL(TR_RATE, 0), FLOAT_RATE_FORMULA, "
 			"NVL(START_DATE, ASS_FROM), ASS_TO, NVL(RATE, 0), NVL(AMORT_FACT, 1), NVL(CAPIT_RATE, 0), "
 			"NVL(PLUS_AMOUNT, 0), ASS_TO - ADD_MONTHS(ASS_TO, ROUND(MONTHS_BETWEEN(ASS_FROM, ASS_TO), 0)) "
 			"FROM SEMAM.NW_TR_TICKETS A, SEMAM.NW_ASSETS B, SEMAM.NW_ASS_PERIODS C "
 			"WHERE B.ASS_CODE = A.ASSET_CODE "
 			"AND C.ASS_CODE(+) = B.ASS_CODE "
 			"AND C.ASS_FROM(+) <= %s "
-			"AND C.ASS_TO(+) > %s "
+			"AND C.ASS_TO(+) + DECODE(NVL(C.ACTION(+), 'A'), 'INCLUSIVE', 1, 0) > %s "
 			"AND A.PORTFOLIO = %s "
 			"AND A.TRANS_NUM = %s ", (LPCTSTR) sDate, (LPCTSTR) sDate, (LPCTSTR) sPort, 
 			(LPCTSTR) sTransNum);
@@ -52,21 +52,22 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR Date, LPCTSTR Portfolio, LP
 		RateBasis = GetOraLoader().GetDBString(7);
 		Accrual = GetOraLoader().GetDBString(8);
 		PrePaid = GetOraLoader().GetDBString(9);
-		LevRateBasis = GetOraLoader().GetDBString(10);
-		GetOraLoader().GetFieldValue(11, &Value);
+		GetFormula() = GetOraLoader().GetDBString(10);
+		LevRateBasis = GetOraLoader().GetDBString(11);
+		GetOraLoader().GetFieldValue(12, &Value);
 		LevRate = (double) Value;
-		Formula = GetOraLoader().GetDBString(12);
-		AssFrom = GetOraLoader().GetDBString(13);
-		AssTo = GetOraLoader().GetDBString(14);
-		GetOraLoader().GetFieldValue(15, &Value);
-		Rate = (double) Value;
+		Formula = GetOraLoader().GetDBString(13);
+		AssFrom = GetOraLoader().GetDBString(14);
+		AssTo = GetOraLoader().GetDBString(15);
 		GetOraLoader().GetFieldValue(16, &Value);
-		Amort = (double) Value;
+		Rate = (double) Value;
 		GetOraLoader().GetFieldValue(17, &Value);
-		CapRate = (double) Value;
+		Amort = (double) Value;
 		GetOraLoader().GetFieldValue(18, &Value);
-		Plus = (double) Value;
+		CapRate = (double) Value;
 		GetOraLoader().GetFieldValue(19, &Value);
+		Plus = (double) Value;
+		GetOraLoader().GetFieldValue(20, &Value);
 		AADays = (int) Value;
 		GetOraLoader().MoveNext();
 	}
@@ -74,8 +75,7 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR Date, LPCTSTR Portfolio, LP
 	CAssetLev::Setup(OraLoader, TransType, Amount, Price, Fxrate, AssetType, Amort, Plus, Dir);
 
 	if(Rate != 0)
-		CAssetLev::SetupIntInfo(AssFrom, VDate, Date, AssTo, RateBasis, Rate, AADays, 
-								Accrual, PrePaid);
+		CAssetLev::SetupIntInfo(AssFrom, VDate, Date, AssTo, RateBasis, Rate, AADays, Accrual, PrePaid);
 
 	if(CapRate != 0)
 		CAssetLev::SetupCapInfo(AssFrom, VDate, Date, RateBasis, CapRate);
@@ -84,10 +84,9 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR Date, LPCTSTR Portfolio, LP
 		CAssetLev::SetupLevInfo(VDate, Date, LevRateBasis, LevRate, Formula);
 }
 
-void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR TransType, LPCTSTR Dir, 
-					LPCTSTR Asset, LPCTSTR ValueDate, LPCTSTR Date, LPCTSTR NomAmount, 
-					LPCTSTR Price, LPCTSTR Fxrate, LPCTSTR LevRateBasis, LPCTSTR LevRate, 
-					LPCTSTR Formula)
+void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR TransType, LPCTSTR Dir, LPCTSTR Asset, LPCTSTR ValueDate, 
+						LPCTSTR Date, LPCTSTR NomAmount, LPCTSTR Price, LPCTSTR Fxrate, LPCTSTR Formula, 
+						LPCTSTR LevRateBasis, LPCTSTR LevRate, LPCTSTR RepoFormula)
 {
 	double dNomAmount, dLevRate, dPrice, dFxrate;
 	CQData QData;
@@ -96,13 +95,13 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR TransType, LPCTSTR Dir,
 	dPrice = atof(QData.RemoveComma(Price));
 	dFxrate = atof(QData.RemoveComma(Fxrate));
 	dLevRate = atof(QData.RemoveComma(LevRate));
-	Setup(OraLoader, TransType, Dir, Asset, ValueDate, Date, dNomAmount, dPrice, 
-			dFxrate, LevRateBasis, dLevRate, Formula);		
+	Setup(OraLoader, TransType, Dir, Asset, ValueDate, Date, dNomAmount, dPrice, dFxrate, 
+			Formula, LevRateBasis, dLevRate, RepoFormula);		
 }
 
-void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR TransType, LPCTSTR Dir, LPCTSTR Asset, 
-					  LPCTSTR ValueDate, LPCTSTR Date, double NomAmount, double Price, 
-					  double Fxrate, LPCTSTR LevRateBasis, double LevRate, LPCTSTR Formula)
+void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR TransType, LPCTSTR Dir, LPCTSTR Asset, LPCTSTR ValueDate, 
+					  LPCTSTR Date, double NomAmount, double Price, double Fxrate, LPCTSTR Formula, 
+					  LPCTSTR LevRateBasis, double LevRate, LPCTSTR RepoFormula)
 {
 	CQData QData;
 	double Amort = 1, Rate = 0, PlusAmount = 0, CapRate = 0;
@@ -117,16 +116,17 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR TransType, LPCTSTR Dir, LPC
 		return;
 	}
 	
+	GetFormula() = Formula;
 	Text = QData.GetQueryDate(ValueDate);
 	OraLoader.GetSql().Format("SELECT NVL(START_DATE, ASS_FROM), ASS_TO, ASS_RATE_BASIS, "
-			"ASS_ACCRUABLE, ASS_PPAID_INT, ASS_TYPE, RATE, NVL(AMORT_FACT, 1), "
-			"NVL(CAPIT_RATE, 0), NVL(PLUS_AMOUNT, 0), "
-			"ASS_TO - ADD_MONTHS(ASS_TO, ROUND(MONTHS_BETWEEN(ASS_FROM, ASS_TO), 0)) "
-			"FROM SEMAM.NW_ASSETS A, SEMAM.NW_ASS_PERIODS B "
-			"WHERE B.ASS_CODE(+) = A.ASS_CODE "
-			"AND B.ASS_FROM(+) <= %s "
-			"AND B.ASS_TO(+) > %s "
-			"AND A.ASS_CODE = %s ", (const char*) Text, (const char*) Text, QData.GetQueryText(Asset));
+							"ASS_ACCRUABLE, ASS_PPAID_INT, ASS_TYPE, RATE, NVL(AMORT_FACT, 1), "
+							"NVL(CAPIT_RATE, 0), NVL(PLUS_AMOUNT, 0), "
+							"ASS_TO - ADD_MONTHS(ASS_TO, ROUND(MONTHS_BETWEEN(ASS_FROM, ASS_TO), 0)) "
+							"FROM SEMAM.NW_ASSETS A, SEMAM.NW_ASS_PERIODS B "
+							"WHERE B.ASS_CODE(+) = A.ASS_CODE "
+							"AND B.ASS_FROM(+) <= %s "
+							"AND B.ASS_TO(+) + DECODE(NVL(B.ACTION(+), 'A'), 'INCLUSIVE', 1, 0) > %s "
+							"AND A.ASS_CODE = %s ", (const char*) Text, (const char*) Text, QData.GetQueryText(Asset));
 	if(!OraLoader.Open())
 		return;
 	
@@ -166,5 +166,5 @@ void CAssetVal::Setup(COraLoader &OraLoader, LPCTSTR TransType, LPCTSTR Dir, LPC
 		CAssetLev::SetupCapInfo(From, ValueDate, Date, RateBasis, CapRate);
 	
 	if(strcmp(TransType, REPO) == 0 || strcmp(TransType, LEVERAGE) == 0)
-		CAssetLev::SetupLevInfo(ValueDate, Date, LevRateBasis, LevRate, Formula);
+		CAssetLev::SetupLevInfo(ValueDate, Date, LevRateBasis, LevRate, RepoFormula);
 }

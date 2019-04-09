@@ -14,11 +14,12 @@ class CAssetLev : public CCapBond
 DECLARE_DYNAMIC(CAssetLev)
 
 protected:
+	CString m_Formula;
 	double m_LevAmount;
 	double m_LevInterest;
 	double m_LevRate;
 	CString m_LevRateBasis;
-	CString m_Formula;
+	CString m_RepoFormula;
 	BOOL m_bLev;
 	int m_nLevDays;
 	int m_nLevYearBase;
@@ -26,19 +27,18 @@ protected:
 public:
 	CAssetLev() { SetupLevInfo(EMPTYSTRING, EMPTYSTRING, EMPTYSTRING, 0, NULL); }
 	CAssetLev(CAssetLev &AssetLev);
-	CAssetLev(COraLoader &OraLoader, LPCTSTR Type, double NomAmount, double Price, 
-			double FxRate, double BondFact = 1, double AmortFact = 1, double PlusAmount = 0, 
-			LPCTSTR Dir = P) : CCapBond(OraLoader, Type, NomAmount, Price, FxRate, 
-			BondFact, AmortFact, PlusAmount, Dir)
+	CAssetLev(COraLoader &OraLoader, LPCTSTR Type, double NomAmount, double Price, double FxRate, 
+				double BondFact = 1, double AmortFact = 1, double PlusAmount = 0, LPCTSTR Dir = P) : 
+				CCapBond(OraLoader, Type, NomAmount, Price, FxRate, BondFact, AmortFact, PlusAmount, Dir)
 			{ SetupLevInfo(EMPTYSTRING, EMPTYSTRING, EMPTYSTRING, 0, NULL); }
-	CAssetLev(COraLoader &OraLoader, LPCTSTR Type, double NomAmount, double Price, 
-			double FxRate, LPCTSTR AssetType = EQUITYTYPE, double AmortFact = 1, 
-			double PlusAmount = 0, LPCTSTR Dir = P) : CCapBond(OraLoader, Type, 
-			NomAmount, Price, FxRate, AssetType, AmortFact, PlusAmount, Dir)
+	CAssetLev(COraLoader &OraLoader, LPCTSTR Type, double NomAmount, double Price, double FxRate, 
+			LPCTSTR AssetType = EQUITYTYPE, double AmortFact = 1, double PlusAmount = 0, LPCTSTR Dir = P) : 
+			CCapBond(OraLoader, Type, NomAmount, Price, FxRate, AssetType, AmortFact, PlusAmount, Dir)
 			{ SetupLevInfo(EMPTYSTRING, EMPTYSTRING, EMPTYSTRING, 0, NULL); }
 	~CAssetLev() {}
 
 protected:
+	void PreInfBondAccrual(COraLoader &OraLoader, const CString Asset, LPCTSTR Date);
 	void SetLevDays(int Days = 0) { m_nLevDays = Days; }
 	void AddLevDays(int Days) { m_nLevDays += Days; }
 	void SetLevInterest(double Interest = 0) { m_LevInterest = Interest; }
@@ -53,6 +53,7 @@ public:
 	void SetLevRate(double LevRate = 0) { m_LevRate = LevRate; }
 	double GetLevRate() { return !m_bLev ? 0 : m_LevRate; }
 	CString &GetFormula() { return m_Formula; }
+	CString &GetRepoFormula() { return m_RepoFormula; }
 	CString &GetLevRateBasis() { return m_LevRateBasis; }
 	int GetLevDays() { return m_nLevDays; }
 	int GetLevYearBase() { return m_nLevYearBase; }
@@ -78,5 +79,9 @@ public:
 
 	virtual int GetnDir(LPCTSTR Dir = NULL);
 	double ComputeLevAmount(BOOL bRefresh = FALSE);
+
+	double GetPrePaidInt(COraLoader *pOraLoader = NULL, LPCTSTR Asset = NULL);
+	double GetAccretion(COraLoader *pOraLoader = NULL, LPCTSTR Asset = NULL);
+	double GetAccrualInt(COraLoader *pOraLoader = NULL, LPCTSTR Asset = NULL);
 };
 #endif

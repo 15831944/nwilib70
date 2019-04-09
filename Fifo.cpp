@@ -555,7 +555,7 @@ BOOL CFifo::SetupSql(CString &Portfolios, CString &Condition)
 		"AND D.TRANS_TYPE(+) = 'FOREX' "
 		"AND G.ASSET_CODE = E.ASS_CODE(+) "
 		"AND E.ASS_FROM(+) <= NVL(ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
-		"AND E.ASS_TO(+) > NVL(ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
+		"AND E.ASS_TO(+) + DECODE(NVL(E.ACTION(+), 'A'), 'INCLUSIVE', 1, 0) > NVL(ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
 		"AND A.CURRENCY = X.CURRENCY "		
 		"AND A.TRANS_TYPE IN ('SECURITIES', 'CDS') "
 		"AND A.TRANS_DIRECTION IN ('S','P') "
@@ -589,7 +589,7 @@ BOOL CFifo::SetupSql(CString &Portfolios, CString &Condition)
 		"AND A.OPT_EXPIRATION <= %s "
 		"AND G.ASSET_CODE = E.ASS_CODE(+) "
 		"AND E.ASS_FROM(+) <= NVL(ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
-		"AND E.ASS_TO(+) > NVL(ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
+		"AND E.ASS_TO(+) + DECODE(NVL(E.ACTION(+), 'A'), 'INCLUSIVE', 1, 0) > NVL(ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
 		"AND A.PORTFOLIO = F.PORTFOLIO "
 		"AND A.TRANS_NUM = G.TRANS_NUM ", Date, Date, Date, Date);
 	m_OraLoader.GetSql() += Sql;
@@ -626,10 +626,10 @@ BOOL CFifo::SetupSql(CString &Portfolios, CString &Condition)
 		"AND M.TRANS_TYPE(+) = 'FOREX' "
 		"AND E.ASSET_CODE = G.ASS_CODE(+) "
 		"AND G.ASS_FROM(+) <= NVL(E.ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
-		"AND G.ASS_TO(+) > NVL(E.ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
+		"AND G.ASS_TO(+) + DECODE(NVL(G.ACTION(+), 'A'), 'INCLUSIVE', 1, 0) > NVL(E.ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
 		"AND L.ASSET_CODE = H.ASS_CODE(+) "
 		"AND H.ASS_FROM(+) <= NVL(L.ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
-		"AND H.ASS_TO(+) > NVL(L.ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
+		"AND H.ASS_TO(+) + DECODE(NVL(H.ACTION(+), 'A'), 'INCLUSIVE', 1, 0) > NVL(L.ACTUAL_VDATE, TO_DATE(%s, 'DD-MON-YY')) "
 		"AND A.PORTFOLIO = F.PORTFOLIO ", Date, Date, Date, Date, Date);
 	m_OraLoader.GetSql() += Sql;
 	if(bPortAll)
@@ -652,7 +652,7 @@ BOOL CFifo::SetupSql(CString &Portfolios, CString &Condition)
 		"AND A.ASS_FROM = C.INDATE "
 		"AND A.AMORT_FACT <> 0 "
 		"AND A.ASS_FROM <= %s "
-		"AND A.ASS_TO > %s ", Date, Date);
+		"AND A.ASS_TO + DECODE(NVL(A.ACTION(+), 'A'), 'INCLUSIVE', 1, 0) > %s ", Date, Date);
 	m_OraLoader.GetSql() += Sql;
 	if(bPortAll)
 		m_OraLoader.GetSql() += "AND F.STATUS IS NULL ";

@@ -52,8 +52,7 @@ double CCapBond::GetPrePaidAccretion()
 {
 	if((m_Type == SECURITIES || m_Type == CDS || m_Type == REPO || m_Type == LEVERAGE) && GetCapRate() != 0)
 	{
-		return CBond::ComputeInterest(GetNomAmount(), GetCapRate(), GetPreIntDate(), 
-							GetValueDate(), GetRateBasis(), &m_nPreCapDays, &m_nPreCapDays2);
+		return CBond::ComputeInterest(GetNomAmount(), GetCapRate(), GetPreIntDate(), GetValueDate(), GetRateBasis(), m_nPreCapDays, m_nPreCapDays2);
 	}
 	return 0;
 }
@@ -61,8 +60,7 @@ double CCapBond::GetPrePaidAccretion()
 double CCapBond::GetAccretion()
 {
 	if((m_Type == SECURITIES || m_Type == CDS || m_Type == REPO || m_Type == LEVERAGE) && GetCapRate() != 0)
-		return CBond::ComputeInterest(GetNomAmount(), GetCapRate(), GetPreIntDate(), 
-							GetDate(), GetRateBasis(), &m_nCapDays, &m_nCapDays2);
+		return CBond::ComputeInterest(GetNomAmount(), GetCapRate(), GetPreIntDate(), GetDate(), GetRateBasis(), m_nCapDays, m_nCapDays2);
 
 	return 0;
 }

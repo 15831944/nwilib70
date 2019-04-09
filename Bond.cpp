@@ -167,7 +167,7 @@ double CBond::ComputeInterest(double Amount, double Rate, int Days, int YearBase
 }
 
 double CBond::ComputeInterest(double Amount, double Rate, LPCTSTR StartDate, 
-						LPCTSTR EndDate, LPCTSTR RateBasis, int *IntDays, int *IntDays2, int AADays)
+						LPCTSTR EndDate, LPCTSTR RateBasis, int &IntDays, int &IntDays2, int AADays)
 {
 	double Interest = 0;
 
@@ -176,17 +176,17 @@ double CBond::ComputeInterest(double Amount, double Rate, LPCTSTR StartDate,
 	if(strlen(StartDate) <= 0)
 		return 0;
 	
-	*IntDays = ODate.GetDays(EndDate);
-	if(*IntDays <= 0)
-		*IntDays = 0;
+	IntDays = ODate.GetDays(EndDate);
+	if(IntDays <= 0)
+		IntDays = 0;
 	
 	if(ODate.GetYearBase2() > 0)
-		*IntDays2 = ODate.GetIntDays2();
+		IntDays2 = ODate.GetIntDays2();
 
-	Interest = ComputeInterest(Amount, Rate, *IntDays, ODate.GetYearBase());
+	Interest = ComputeInterest(Amount, Rate, IntDays, ODate.GetYearBase());
 
 	if(strcmp(RateBasis, "A/A (I)") == 0)		
-		Interest += ComputeInterest(Amount, Rate, *IntDays2, ODate.GetYearBase2());
+		Interest += ComputeInterest(Amount, Rate, IntDays2, ODate.GetYearBase2());
 	return Interest;
 }
 
@@ -194,7 +194,7 @@ double CBond::GetPrePaidInt()
 {
 	if((m_Type == SECURITIES || m_Type == CDS || m_Type == REPO || m_Type == LEVERAGE) && GetPrePaid())
 		return ComputeInterest(GetNomAmount(), GetRate(), GetPreIntDate(), GetValueDate(), 
-							GetRateBasis(), &m_nPreIntDays, &m_nPreIntDays2, GetAADays());
+							GetRateBasis(), m_nPreIntDays, m_nPreIntDays2, GetAADays());
 
 	return 0;
 }
@@ -203,7 +203,7 @@ double CBond::GetAccrualInt()
 {
 	if((m_Type == SECURITIES || m_Type == CDS || m_Type == REPO || m_Type == LEVERAGE || m_Type == INTSWAP) && GetAccruable())
 		return ComputeInterest(GetNomAmount(), GetRate(), GetPreIntDate(), GetDate(), 
-							GetRateBasis(), &m_nIntDays, &m_nIntDays2, GetAADays());
+							GetRateBasis(), m_nIntDays, m_nIntDays2, GetAADays());
 	
 	return 0;
 }

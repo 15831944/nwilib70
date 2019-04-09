@@ -35,11 +35,9 @@ protected:
 protected:
 	virtual double ComputeValue(double NomAmount = -1, double Price = -1);
 	virtual double ComputeInterest(double Amount, double Rate, int Days, int YearBase);
-	virtual double ComputeInterest(double Amount, double Rate, LPCTSTR StartDate, 
-						LPCTSTR EndDate, LPCTSTR RateBasis, int *IntDays, 
-						int *IntDays2, int AADays = 0);
-	int ComputeDays(LPCTSTR StartDate, LPCTSTR EndDate, LPCTSTR RateBasis,
-					int &YearBase, int AADays = 0);
+	virtual double ComputeInterest(double Amount, double Rate, LPCTSTR StartDate, LPCTSTR EndDate, 
+									LPCTSTR RateBasis, int &IntDays, int &intDays2, int AADays = 0);
+	int ComputeDays(LPCTSTR StartDate, LPCTSTR EndDate, LPCTSTR RateBasis, int &YearBase, int AADays = 0);
 	int ComputeDays(LPCTSTR StartDate, LPCTSTR ValueDate, LPCTSTR EndDate, LPCTSTR RateBasis,
 					int &YearBase, int AADays = 0);
 
